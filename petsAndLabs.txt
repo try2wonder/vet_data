@@ -1,1 +1,1 @@
-{'pet1': ['lab1', 'lab2', 'lab3'], 'pet2': ['lab1', 'lab2'], 'pet3': ['lab1'], 'pet4': ['lab1']}
+{'pet1': 'lab1', 'bip': ['bop']}
