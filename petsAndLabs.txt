@@ -1,1 +1,1 @@
-{'pet1': 'lab1', 'bip': ['bop']}
+{'pet1': 'lab1'}

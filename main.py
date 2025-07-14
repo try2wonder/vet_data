@@ -4,18 +4,18 @@ import re
 from openpyxl import Workbook, load_workbook
 
 #############Checking pets and labs. Adding new pets and labs
-#pets = {
-#        "pet1": "lab1"
-#        }
-pet_name = "bip"
-lab_name = "bop"
-
+pets = {
+        "pet1": "lab1"
+        }
+pet_name = str()
+lab_name = str()
 
 
 with open('petsAndLabs.txt','r') as file:
     data_string = file.read()
     pets = eval(data_string)
    
+print(pet_name, lab_name)
 print(pets)
 
 
@@ -25,10 +25,14 @@ def pet_choice_dialog():
     lab_name = input("Enter lab's name: ")
     
 
+
 pet_choice_dialog()
 
+print(pet_name)
+print(pets)
+
 def check_pet_lab(pet_name,lab_name):
-    if pet_name in pets:
+    if pet_name in pets.keys():
         if lab_name in pets[pet_name]:
             return "pet lab found" #choosing the right Sheet
         else:
@@ -62,6 +66,23 @@ check_pet_lab(pet_name, lab_name)
 with open('petsAndLabs.txt','w', newline='') as file:
     file.write(str(pets))
 
+#########Workign with pdf
+pdf_name = "хорси.pdf"
+temp_list_var = []
+def work_with_pdf(name):
+    with pdfplumber.open(name) as pdf:
+        page = pdf.pages[0]
+    
+        full_text = page.extract_text()
+        tables = page.extract_tables()
+        #print(type(text))   #string
+        #print(type(tables)) #list
+        return tables
+temp_list_var = work_with_pdf(pdf_name)[0]
+clean_list = temp_list_var[1:]
+clean_dict = {testd[0] : testd[2] for testd in clean_list}
+print(clean_dict)
+
 
 
 
@@ -93,10 +114,10 @@ def add_data_column(pet_name,lab_name):
 
     sheet = wb[f"{pet_name}_{lab_name}"]
 
-    last_col = sheet.max_column #Finds the last one with data
+    last_col = sheet.max_column #Finds the last one with data. Need to check if the date already exists there
 
     new_columns = {
-            last_col+1: "New Column 1"
+            last_col+1: "New Column 1" #This is supposed to be the date of analysis. mby make a temp var for column number, in case its not the last one
             }
 
     for col_num, header in new_columns.items():
@@ -108,15 +129,5 @@ def add_data_column(pet_name,lab_name):
     wb.save('pet_lab_data.xlsx')
 
 add_data_column(pet_name,lab_name)
-
-#########Workign with pdf
-pdf_name = "хорси.pdf"
-with pdfplumber.open(pdf_name) as pdf:
-    page = pdf.pages[0]
-
-    full_text = page.extract_text()
-    tables = page.extract_tables()
-    #print(type(text))   #string
-    #print(type(tables)) #list
 
 
